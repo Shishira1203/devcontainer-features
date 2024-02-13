@@ -12,6 +12,10 @@ if [ $GIT = "true" ]; then
 	pkgs+=("git")
 fi
 
+if [ $LAZYVIM_STARTER = "true" && $GIT != "true" ]; then
+	pkgs+=("git")
+fi
+
 if [ $BUILD_ESSENTIAL = "true" ]; then
 	pkgs+=("build-essential")
 fi
@@ -20,7 +24,15 @@ if [ $WGET = "true" ]; then
 	pkgs+=("wget")
 fi
 
+if [ $INSTALL_NVIM = "true" && $WGET != "true" ]; then
+	pkgs+=("wget")
+fi
+
 if [ $CURL = "true" ]; then
+	pkgs+=("curl")
+fi
+
+if [ $LAZYGIT = "true" && $CURL != "true" ]; then
 	pkgs+=("curl")
 fi
 
@@ -40,17 +52,30 @@ if [ $RIPGREP = "true" ]; then
 	pkgs+=("ripgrep")
 fi
 
+if [ $FD = "true" ]; then
+	pkgs+=("fd-find")
+fi
+
 if [ $UNZIP = "true" ]; then
 	pkgs+=("unzip")
 fi
 
 apt install -y "${pkgs[@]}"
 
+if [ $LAZYGIT = "true" ]; then
+	TEMP_DIR="$(mktemp -d)"
+	pushd "$TEMP_DIR"
+	LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+	curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+	tar xf lazygit.tar.gz lazygit
+	sudo install lazygit /usr/local/bin
+	popd
+fi
+
 # install neovim
 if [ $INSTALL_NVIM = "true" ]; then
 	TEMP_DIR="$(mktemp -d)"
 	pushd "$TEMP_DIR"
-	apt install -y wget
 	wget "https://github.com/neovim/neovim/releases/download/$NVIM_VERSION/nvim-linux64.tar.gz"
 	tar xf nvim-linux64.tar.gz
 	rm nvim-linux64.tar.gz
@@ -72,7 +97,6 @@ fi
 
 # install lazyvim starter
 if [ $LAZYVIM_STARTER = "true" ]; then
-	apt install -y git
 	git clone https://github.com/LazyVim/starter ~/.config/nvim
 	rm -rf ~/.config/nvim/.git
 fi
