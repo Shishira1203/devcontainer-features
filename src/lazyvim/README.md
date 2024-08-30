@@ -7,7 +7,7 @@ Provide essentials features for lazyvim inside devcontainers
 
 ```json
 "features": {
-    "ghcr.io/Shishira1203/devcontainer-features/lazyvim:0": {}
+    "ghcr.io/shishir-karanth/devcontainer-features/lazyvim:0": {}
 }
 ```
 
@@ -34,4 +34,4 @@ Provide essentials features for lazyvim inside devcontainers
 
 ---
 
-_Note: This file was auto-generated from the [devcontainer-feature.json](https://github.com/Shishira1203/devcontainer-features/blob/main/src/lazyvim/devcontainer-feature.json).  Add additional notes to a `NOTES.md`._
+_Note: This file was auto-generated from the [devcontainer-feature.json](https://github.com/shishir-karanth/devcontainer-features/blob/main/src/lazyvim/devcontainer-feature.json).  Add additional notes to a `NOTES.md`._
